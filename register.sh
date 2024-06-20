@@ -1,10 +1,23 @@
 #!/bin/bash
 
-# Create an empty registry.json file
-> registry.json
+# Create an empty registry.manifest.json file if it doesn't exist
+if [ ! -f registry.manifest.json ]; then
+  > registry.manifest.json
+fi
 
 # Initialize the registry.json file with the base structure
-echo '{"manifestVersion": "1.0.0", "registeredTapplets": {}}' > registry.json
+manifest_version=$(jq -r '.manifestVersion' registry.manifest.json)
+if [ -z "$manifest_version" ]; then
+  manifest_version="1.0.0"
+  echo '{"manifestVersion": "'$manifest_version'", "registeredTapplets": {}}' > registry.manifest.json
+else 
+  # Increment the manifestVersion number
+  IFS='.' read -r major minor patch <<< "$manifest_version"
+  patch=$((patch+1))
+  manifest_version="$major.$minor.$patch"
+  jq ".manifestVersion = \"$manifest_version\"" registry.manifest.json > temp.json && mv temp.json registry.manifest.json
+fi
+
 
 # Search for all manifest.json files and extract fields
 for file in $(find . -type f -name tapplet.manifest.json); do
@@ -19,14 +32,14 @@ for file in $(find . -type f -name tapplet.manifest.json); do
   integrity=$(jq -r '.source.location.npm.integrity' "$file")
   registryUrl=$(jq -r '.source.location.npm.distTarball' "$file")
 
-  # Check if the packageName already exists in the registry.json file
-  if jq -e ".registeredTapplets.\"$packageName\"" registry.json > /dev/null; then
+  # Check if the packageName already exists in the registry.manifest.json file
+  if jq -e ".registeredTapplets.\"$packageName\"" registry.manifest.json > /dev/null; then
     # If it exists, add the new version
-    temp_json=$(jq ".registeredTapplets.\"$packageName\".versions += {\"$version\": {\"integrity\": \"$integrity\", \"registryUrl\": \"$registryUrl\"}}" registry.json)
+    temp_json=$(jq ".registeredTapplets.\"$packageName\".versions += {\"$version\": {\"integrity\": \"$integrity\", \"registryUrl\": \"$registryUrl\"}}" registry.manifest.json)
   else
     # If it doesn't exist, add the new tapplet
-    temp_json=$(jq ".registeredTapplets += {\"$packageName\": {\"id\": \"$packageName\", \"metadata\": {\"displayName\": \"$displayName\", \"author\": {\"name\": \"$authorName\", \"website\": \"$authorWebsite\"}, \"codeowners\": [\"$codeowners\"], \"audits\": [], \"category\": \"$category\", \"logoPath\": \"$logoPath\"}, \"versions\": {\"$version\": {\"integrity\": \"$integrity\", \"registryUrl\": \"$registryUrl\"}}}}" registry.json)
+    temp_json=$(jq ".registeredTapplets += {\"$packageName\": {\"id\": \"$packageName\", \"metadata\": {\"displayName\": \"$displayName\", \"author\": {\"name\": \"$authorName\", \"website\": \"$authorWebsite\"}, \"codeowners\": [\"$codeowners\"], \"audits\": [], \"category\": \"$category\", \"logoPath\": \"$logoPath\"}, \"versions\": {\"$version\": {\"integrity\": \"$integrity\", \"registryUrl\": \"$registryUrl\"}}}}" registry.manifest.json)
   fi
 
-  echo "$temp_json" > registry.json
+  echo "$temp_json" > registry.manifest.json
 done
