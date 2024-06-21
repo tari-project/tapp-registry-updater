@@ -25232,7 +25232,7 @@ const findManifestFiles = (dir) => {
     return manifestFiles;
 };
 function addTappletToRegistry() {
-    const registryManifestPath = 'registry.manifest.json';
+    const registryManifestPath = 'tapplets-registry.manifest.json';
     // Create an empty registry.manifest.json file if it doesn't exist
     if (!fs.existsSync(registryManifestPath)) {
         fs.writeFileSync(registryManifestPath, '{}');
@@ -25256,7 +25256,6 @@ function addTappletToRegistry() {
     // Search for all manifest.json files and extract fields
     const tappPath = path_1.default.join('.');
     const tappletManifestFiles = findManifestFiles(tappPath);
-    console.log(tappPath);
     console.log(tappletManifestFiles);
     for (const file of tappletManifestFiles) {
         console.log(file);
