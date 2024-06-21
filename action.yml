@@ -1,13 +1,14 @@
-name: "Update Tapplet Registry"
-description: "Check all tapplets' manifest file and generate the Tapplet Registry manifest"
+name: 'Update Tapplet Registry'
+description:
+  "Check all tapplets' manifest file and generate the Tapplet Registry manifest"
 branding:
-  icon: "check-circle"
-  color: "green"
+  icon: 'check-circle'
+  color: 'green'
 
 outputs:
   registry-version:
-    description: "The Tapplet Registry manifest version"
+    description: 'The Tapplet Registry manifest version'
 
 runs:
   using: node20
-  main: "./register.sh"
+  main: './dist/index.js'

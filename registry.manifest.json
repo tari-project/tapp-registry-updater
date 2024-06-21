@@ -1,32 +1,6 @@
 {
-  "manifestVersion": "1.0.1",
+  "manifestVersion": "1.0.15",
   "registeredTapplets": {
-    "tapplet-example": {
-      "id": "tapplet-example",
-      "metadata": {
-        "displayName": "Tapplet human readable name",
-        "author": {
-          "name": "MCozhusheck",
-          "website": "https://github.com/MCozhusheck"
-        },
-        "codeowners": [
-          "@MCozhusheck"
-        ],
-        "audits": [],
-        "category": "test",
-        "logoPath": "./dist/images/logo.svg"
-      },
-      "versions": {
-        "0.0.2": {
-          "integrity": "sha512-ivQM1oWaCaZrHARDCD2rib/RFmNDdSDuCQofOsEc3HLo/zgGjLXiySwm/uu3s/5lt9S+/oPC6wFE3m5agzdizA==",
-          "registryUrl": "https://registry.npmjs.org/tapplet-example/-/tapplet-example-0.0.2.tgz"
-        },
-        "0.0.1": {
-          "integrity": "sha512-ivQM1oWaCaZrHARDCD2rib/RFmNDdSDuCQofOsEc3HLo/zgGjLXiySwm/uu3s/5lt9S+/oPC6wFE3m5agzdizA==",
-          "registryUrl": "https://registry.npmjs.org/tapplet-example/-/tapplet-example-0.0.1.tgz"
-        }
-      }
-    },
     "tapp-example": {
       "id": "tapp-example",
       "metadata": {
@@ -43,13 +17,39 @@
         "logoPath": "./dist/images/logo.svg"
       },
       "versions": {
-        "1.0.2": {
-          "integrity": "sha512-SdcQQ5fIbmWckZc5hWrjQU5sMsqXW0sO80K0fcTW6scxPhiYJuMt3oO35PNzAIXOTt0CQOGbWNMX+x1Gic/YaA==",
-          "registryUrl": "https://registry.npmjs.org/tapp-example/-/tapp-example-1.0.2.tgz"
-        },
         "1.0.0": {
           "integrity": "sha512-Teya54P3ObC68rLu8E0IvPfjju0hlIgrej9llyIcNMF5CXoO5eCIBbvNnMaDt6z5nRqrWi6tHFZwlCK1yYpMaw==",
           "registryUrl": "https://registry.npmjs.org/tapp-example/-/tapp-example-1.0.0.tgz"
+        },
+        "1.0.2": {
+          "integrity": "sha512-SdcQQ5fIbmWckZc5hWrjQU5sMsqXW0sO80K0fcTW6scxPhiYJuMt3oO35PNzAIXOTt0CQOGbWNMX+x1Gic/YaA==",
+          "registryUrl": "https://registry.npmjs.org/tapp-example/-/tapp-example-1.0.2.tgz"
+        }
+      }
+    },
+    "tapplet-example": {
+      "id": "tapplet-example",
+      "metadata": {
+        "displayName": "Tapplet human readable name",
+        "author": {
+          "name": "MCozhusheck",
+          "website": "https://github.com/MCozhusheck"
+        },
+        "codeowners": [
+          "@MCozhusheck"
+        ],
+        "audits": [],
+        "category": "test",
+        "logoPath": "./dist/images/logo.svg"
+      },
+      "versions": {
+        "0.0.1": {
+          "integrity": "sha512-ivQM1oWaCaZrHARDCD2rib/RFmNDdSDuCQofOsEc3HLo/zgGjLXiySwm/uu3s/5lt9S+/oPC6wFE3m5agzdizA==",
+          "registryUrl": "https://registry.npmjs.org/tapplet-example/-/tapplet-example-0.0.1.tgz"
+        },
+        "0.0.2": {
+          "integrity": "sha512-ivQM1oWaCaZrHARDCD2rib/RFmNDdSDuCQofOsEc3HLo/zgGjLXiySwm/uu3s/5lt9S+/oPC6wFE3m5agzdizA==",
+          "registryUrl": "https://registry.npmjs.org/tapplet-example/-/tapplet-example-0.0.2.tgz"
         }
       }
     }

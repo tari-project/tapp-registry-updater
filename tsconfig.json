@@ -14,6 +14,6 @@
     "skipLibCheck": true,
     "newLine": "lf"
   },
-  "include": ["src"],
+  "include": ["src", "src/register.ts"],
   "exclude": ["./dist", "./node_modules"]
 }
