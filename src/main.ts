@@ -9,13 +9,13 @@ import { addAndFormatCodeowners } from './codeowners/codeowners'
 export async function run(): Promise<void> {
   try {
     // Add new tapplet to the registry
-    const registeredManifests = addTappletToRegistry()
+    const outputs = addTappletToRegistry()
     core.notice(
-      `Registry updated: ${registeredManifests} tapplet(s) have been registered.`
+      `Registry updated to version ${outputs.registryManifestVer}: ${outputs.registeretTappsNr} tapplet(s) have been registered.`
     )
 
     // Set outputs for other workflow steps to use
-    // core.setOutput('status', true)
+    core.setOutput('registry-version', outputs.registryManifestVer)
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)

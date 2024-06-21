@@ -53,6 +53,11 @@ interface RegistryManifest {
   }
 }
 
+interface RegistryUpdaterOutputs {
+  registeretTappsNr: number
+  registryManifestVer: string
+}
+
 const findManifestFiles = (dir: string): string[] => {
   const manifestFiles: string[] = []
 
@@ -69,7 +74,7 @@ const findManifestFiles = (dir: string): string[] => {
 
   return manifestFiles
 }
-export function addTappletToRegistry(): number {
+export function addTappletToRegistry(): RegistryUpdaterOutputs {
   const registryManifestPath = 'registry.manifest.json'
 
   // Create an empty registry.manifest.json file if it doesn't exist
@@ -78,28 +83,27 @@ export function addTappletToRegistry(): number {
   }
 
   // Initialize the registry.json file with the base structure
-  let registryManifest: RegistryManifest = JSON.parse(
+  const registryManifest: RegistryManifest = JSON.parse(
     fs.readFileSync(registryManifestPath, 'utf8')
   )
+
+  let registryManifestVer = '1.0.0'
   if (!registryManifest.manifestVersion) {
-    registryManifest.manifestVersion = '1.0.0'
     registryManifest.registeredTapplets = {}
-    fs.writeFileSync(
-      registryManifestPath,
-      JSON.stringify(registryManifest, null, 2)
-    )
   } else {
     // Increment the manifestVersion number
     let [major, minor, patch] = registryManifest.manifestVersion
       .split('.')
       .map(Number)
     patch++
-    registryManifest.manifestVersion = `${major}.${minor}.${patch}`
-    fs.writeFileSync(
-      registryManifestPath,
-      JSON.stringify(registryManifest, null, 2)
-    )
+    registryManifestVer = `${major}.${minor}.${patch}`
   }
+
+  registryManifest.manifestVersion = registryManifestVer
+  fs.writeFileSync(
+    registryManifestPath,
+    JSON.stringify(registryManifest, null, 2)
+  )
 
   // Search for all manifest.json files and extract fields
   const tappPath = path.join('.')
@@ -160,5 +164,8 @@ export function addTappletToRegistry(): number {
     JSON.stringify(registryManifest, null, 2)
   )
 
-  return tappletManifestFiles.length
+  return {
+    registeretTappsNr: tappletManifestFiles.length,
+    registryManifestVer
+  }
 }

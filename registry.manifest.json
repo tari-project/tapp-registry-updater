@@ -1,5 +1,4 @@
 {
-  "manifestVersion": "1.0.15",
   "registeredTapplets": {
     "tapp-example": {
       "id": "tapp-example",
@@ -9,9 +8,7 @@
           "name": "karczuRF",
           "website": "https://github.com/karczuRF"
         },
-        "codeowners": [
-          "@karczuRF"
-        ],
+        "codeowners": ["@karczuRF"],
         "audits": [],
         "category": "test",
         "logoPath": "./dist/images/logo.svg"
@@ -35,9 +32,7 @@
           "name": "MCozhusheck",
           "website": "https://github.com/MCozhusheck"
         },
-        "codeowners": [
-          "@MCozhusheck"
-        ],
+        "codeowners": ["@MCozhusheck"],
         "audits": [],
         "category": "test",
         "logoPath": "./dist/images/logo.svg"
@@ -53,5 +48,6 @@
         }
       }
     }
-  }
+  },
+  "manifestVersion": "1.0.0"
 }
