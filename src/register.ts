@@ -1,62 +1,11 @@
 import * as fs from 'fs'
 import path from 'path'
 import { addAndFormatCodeowners } from './codeowners/codeowners'
-
-interface TappletManifest {
-  packageName: string
-  displayName: string
-  author: {
-    name: string
-    website: string
-  }
-  repository: {
-    codeowners: string[]
-  }
-  category: string
-  design: {
-    logoPath: string
-  }
-  version: string
-  source: {
-    location: {
-      npm: {
-        integrity: string
-        distTarball: string
-      }
-    }
-  }
-}
-
-interface RegistryManifest {
-  manifestVersion: string
-  registeredTapplets: {
-    [packageName: string]: {
-      id: string
-      metadata: {
-        displayName: string
-        author: {
-          name: string
-          website: string
-        }
-        codeowners: string[]
-        audits: string[]
-        category: string
-        logoPath: string
-      }
-      versions: {
-        [version: string]: {
-          integrity: string
-          registryUrl: string
-        }
-      }
-    }
-  }
-}
-
-interface RegistryUpdaterOutputs {
-  registeretTappsNr: number
-  registryManifestVer: string
-}
+import {
+  RegistryManifest,
+  RegistryUpdaterOutputs,
+  TappletManifest
+} from './types/registry'
 
 const findManifestFiles = (dir: string): string[] => {
   const manifestFiles: string[] = []
@@ -75,7 +24,7 @@ const findManifestFiles = (dir: string): string[] => {
   return manifestFiles
 }
 export function addTappletToRegistry(): RegistryUpdaterOutputs {
-  const registryManifestPath = 'registry.manifest.json'
+  const registryManifestPath = 'tapplets-registry.manifest.json'
 
   // Create an empty registry.manifest.json file if it doesn't exist
   if (!fs.existsSync(registryManifestPath)) {
@@ -108,7 +57,6 @@ export function addTappletToRegistry(): RegistryUpdaterOutputs {
   // Search for all manifest.json files and extract fields
   const tappPath = path.join('.')
   const tappletManifestFiles = findManifestFiles(tappPath)
-  console.log(tappPath)
   console.log(tappletManifestFiles)
   for (const file of tappletManifestFiles) {
     console.log(file)

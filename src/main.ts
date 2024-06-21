@@ -1,6 +1,5 @@
 import * as core from '@actions/core'
 import { addTappletToRegistry } from './register'
-import { addAndFormatCodeowners } from './codeowners/codeowners'
 
 /**
  * The main function for the action.
