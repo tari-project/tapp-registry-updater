@@ -25217,6 +25217,7 @@ exports.addTappletToRegistry = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
 const path_1 = __importDefault(__nccwpck_require__(1017));
 const codeowners_1 = __nccwpck_require__(5807);
+const TAPPLETS_REGISTRY_MANIFEST_FILE = 'tapplets-registry.manifest.json';
 const findManifestFiles = (dir) => {
     const manifestFiles = [];
     fs.readdirSync(dir).forEach(file => {
@@ -25232,7 +25233,7 @@ const findManifestFiles = (dir) => {
     return manifestFiles;
 };
 function addTappletToRegistry() {
-    const registryManifestPath = 'tapplets-registry.manifest.json';
+    const registryManifestPath = path_1.default.join('dist', TAPPLETS_REGISTRY_MANIFEST_FILE);
     // Create an empty registry.manifest.json file if it doesn't exist
     if (!fs.existsSync(registryManifestPath)) {
         fs.writeFileSync(registryManifestPath, '{}');
@@ -25256,17 +25257,18 @@ function addTappletToRegistry() {
     // Search for all manifest.json files and extract fields
     const tappPath = path_1.default.join('.');
     const tappletManifestFiles = findManifestFiles(tappPath);
-    console.log(tappletManifestFiles);
     for (const file of tappletManifestFiles) {
         console.log(file);
         const tappletManifest = JSON.parse(fs.readFileSync(file, 'utf8'));
         const packageName = tappletManifest.packageName;
         const displayName = tappletManifest.displayName;
-        const authorName = tappletManifest.author.name;
-        const authorWebsite = tappletManifest.author.website;
-        const codeowners = tappletManifest.repository.codeowners[0];
+        const author = tappletManifest.author;
+        const about = tappletManifest.about;
+        const audits = tappletManifest.audits;
+        const codeowners = tappletManifest.repository.codeowners;
         const category = tappletManifest.category;
-        const logoPath = tappletManifest.design.logoPath;
+        const logoUrl = tappletManifest.design.logoPath;
+        const backgroundUrl = tappletManifest.design.backgroundPath;
         const version = tappletManifest.version;
         const integrity = tappletManifest.source.location.npm.integrity;
         const registryUrl = tappletManifest.source.location.npm.distTarball;
@@ -25284,14 +25286,13 @@ function addTappletToRegistry() {
                 id: packageName,
                 metadata: {
                     displayName,
-                    author: {
-                        name: authorName,
-                        website: authorWebsite
-                    },
-                    codeowners: [codeowners],
-                    audits: [],
-                    category,
-                    logoPath
+                    logoUrl,
+                    backgroundUrl,
+                    author,
+                    about,
+                    codeowners,
+                    audits,
+                    category
                 },
                 versions: {
                     [version]: {
@@ -25301,7 +25302,8 @@ function addTappletToRegistry() {
                 }
             };
         }
-        (0, codeowners_1.addAndFormatCodeowners)(packageName, [codeowners]);
+        // Add codeowners
+        (0, codeowners_1.addAndFormatCodeowners)(packageName, codeowners);
     }
     fs.writeFileSync(registryManifestPath, JSON.stringify(registryManifest, null, 2));
     return {

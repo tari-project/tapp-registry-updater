@@ -1,26 +1,54 @@
+interface Author {
+  name: string
+  website: string
+}
+
+interface About {
+  summary: string
+  description: string
+}
+
+interface Audits {
+  auditor: string
+  report: string
+}
+interface Design {
+  logoPath: string
+  backgroundPath: string
+}
+
+interface Repository {
+  type: string
+  url: string
+  codeowners: string[]
+}
+
+interface SourceLocationNpm {
+  npm: {
+    packageName: string
+    registry: string
+    distTarball: string
+    integrity: string
+  }
+}
+
+interface Source {
+  location: SourceLocationNpm
+}
+
 export interface TappletManifest {
   packageName: string
-  displayName: string
-  author: {
-    name: string
-    website: string
-  }
-  repository: {
-    codeowners: string[]
-  }
-  category: string
-  design: {
-    logoPath: string
-  }
   version: string
-  source: {
-    location: {
-      npm: {
-        integrity: string
-        distTarball: string
-      }
-    }
-  }
+  displayName: string
+  status: string
+  category: string
+  author: Author
+  about: About
+  audits: Audits[]
+  design: Design
+  repository: Repository
+  source: Source
+  manifestVersion: string
 }
 
 export interface RegistryManifest {
@@ -30,14 +58,13 @@ export interface RegistryManifest {
       id: string
       metadata: {
         displayName: string
-        author: {
-          name: string
-          website: string
-        }
+        author: Author
+        logoUrl: string
+        backgroundUrl: string
+        about: About
         codeowners: string[]
-        audits: string[]
+        audits: Audits[]
         category: string
-        logoPath: string
       }
       versions: {
         [version: string]: {

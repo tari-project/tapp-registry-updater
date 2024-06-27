@@ -7,6 +7,8 @@ import {
   TappletManifest
 } from './types/registry'
 
+const TAPPLETS_REGISTRY_MANIFEST_FILE = 'tapplets-registry.manifest.json'
+
 const findManifestFiles = (dir: string): string[] => {
   const manifestFiles: string[] = []
 
@@ -24,7 +26,10 @@ const findManifestFiles = (dir: string): string[] => {
   return manifestFiles
 }
 export function addTappletToRegistry(): RegistryUpdaterOutputs {
-  const registryManifestPath = 'tapplets-registry.manifest.json'
+  const registryManifestPath = path.join(
+    'dist',
+    TAPPLETS_REGISTRY_MANIFEST_FILE
+  )
 
   // Create an empty registry.manifest.json file if it doesn't exist
   if (!fs.existsSync(registryManifestPath)) {
@@ -57,7 +62,7 @@ export function addTappletToRegistry(): RegistryUpdaterOutputs {
   // Search for all manifest.json files and extract fields
   const tappPath = path.join('.')
   const tappletManifestFiles = findManifestFiles(tappPath)
-  console.log(tappletManifestFiles)
+
   for (const file of tappletManifestFiles) {
     console.log(file)
     const tappletManifest: TappletManifest = JSON.parse(
@@ -65,11 +70,13 @@ export function addTappletToRegistry(): RegistryUpdaterOutputs {
     )
     const packageName = tappletManifest.packageName
     const displayName = tappletManifest.displayName
-    const authorName = tappletManifest.author.name
-    const authorWebsite = tappletManifest.author.website
-    const codeowners = tappletManifest.repository.codeowners[0]
+    const author = tappletManifest.author
+    const about = tappletManifest.about
+    const audits = tappletManifest.audits
+    const codeowners = tappletManifest.repository.codeowners
     const category = tappletManifest.category
-    const logoPath = tappletManifest.design.logoPath
+    const logoUrl = tappletManifest.design.logoPath
+    const backgroundUrl = tappletManifest.design.backgroundPath
     const version = tappletManifest.version
     const integrity = tappletManifest.source.location.npm.integrity
     const registryUrl = tappletManifest.source.location.npm.distTarball
@@ -87,14 +94,13 @@ export function addTappletToRegistry(): RegistryUpdaterOutputs {
         id: packageName,
         metadata: {
           displayName,
-          author: {
-            name: authorName,
-            website: authorWebsite
-          },
-          codeowners: [codeowners],
-          audits: [],
-          category,
-          logoPath
+          logoUrl,
+          backgroundUrl,
+          author,
+          about,
+          codeowners,
+          audits,
+          category
         },
         versions: {
           [version]: {
@@ -104,7 +110,9 @@ export function addTappletToRegistry(): RegistryUpdaterOutputs {
         }
       }
     }
-    addAndFormatCodeowners(packageName, [codeowners])
+
+    // Add codeowners
+    addAndFormatCodeowners(packageName, codeowners)
   }
 
   fs.writeFileSync(
